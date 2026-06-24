@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boost Your Ad – Payment – Mudah.my</title>
+  <meta name="description" content="Boost your listing with promoted ad packages on Mudah.my. Reach more buyers with featured and top ad options." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .payment-page { padding: 48px 0; }
+    .payment-page h1 {
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--grey-900);
+      margin-bottom: 6px;
+    }
+    .payment-page .subtitle {
+      text-align: center;
+      color: var(--grey-600);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+
+    .payment-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 28px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .payment-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+    }
+    .payment-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    /* ---- Ad Summary ---- */
+    .ad-summary {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--grey-50);
+      border-radius: var(--radius-sm);
+    }
+    .ad-summary-img {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .ad-summary-info { flex: 1; }
+    .ad-summary-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+    .ad-summary-cat {
+      font-size: 0.75rem;
+      color: var(--grey-500);
+      margin-bottom: 8px;
+    }
+    .ad-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    /* ---- Package Cards ---- */
+    .packages { display: flex; flex-direction: column; gap: 12px; }
+    .package-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .package-card:hover { border-color: var(--red); }
+    .package-card.selected {
+      border-color: var(--red);
+      background: var(--red-light);
+      box-shadow: 0 0 0 3px rgba(244,67,54,0.1);
+    }
+    .package-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--grey-400);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .package-card.selected .package-radio {
+      border-color: var(--red);
+    }
+    .package-card.selected .package-radio::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+    .package-info { flex: 1; }
+    .package-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 3px;
+    }
+    .package-benefits {
+      font-size: 0.75rem;
+      color: var(--grey-600);
+    }
+    .package-price {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--red);
+      white-space: nowrap;
+    }
+    .package-badge {
+      position: absolute;
+      top: -10px;
+      right: 14px;
+      background: var(--yellow);
+      color: var(--grey-900);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    /* ---- Payment Details Card ---- */
+    .breakdown { margin-bottom: 24px; }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-size: 0.875rem;
+      color: var(--grey-700);
+    }
+    .breakdown-row.total {
+      border-top: 2px solid var(--grey-200);
+      margin-top: 8px;
+      padding-top: 14px;
+      font-weight: 700;
+      color: var(--grey-900);
+      font-size: 1rem;
+    }
+
+    /* ---- Payment Methods ---- */
+    .payment-methods { margin-bottom: 24px; }
+    .method-tabs {
+      display: flex;
+      border: 1.5px solid var(--grey-300);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .method-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--grey-600);
+      cursor: pointer;
+      transition: var(--transition);
+      border-right: 1px solid var(--grey-300);
+    }
+    .method-tab:last-child { border-right: none; }
+    .method-tab:hover { background: var(--grey-50); }
+    .method-tab.active {
+      background: var(--red);
+      color: var(--white);
+    }
+    .method-tab .tab-icon { display: block; font-size: 1.3rem; margin-bottom: 4px; }
+
+    .card-fields { display: flex; flex-direction: column; gap: 14px; }
+    .card-row { display: flex; gap: 12px; }
+    .card-row .form-group { flex: 1; margin-bottom: 0; }
+
+    /* ---- Secure Notice ---- */
+    .secure-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--grey-500);
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--grey-50);
+      border-radius: var(--radius-sm);
+    }
+    .secure-notice .lock { font-size: 1rem; }
+
+    @media (max-width: 768px) {
+      .payment-layout { grid-template-columns: 1fr; max-width: 100%; }
+      .card-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== TOP NAV ======== -->
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="index.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links">
+        <a href="search.html">Autos</a>
+        <a href="search.html">Property</a>
+        <a href="search.html">Electronics</a>
+        <a href="search.html">Jobs &amp; Services</a>
+        <a href="help.html">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="#" class="topnav-icon">🔔</a>
+        <a href="#" class="topnav-icon">💬</a>
+        <a href="sell.html" class="btn-post-ad">✚ Post Free Ad</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== PAYMENT PAGE ======== -->
+  <div class="payment-page">
+    <div class="container">
+      <h1>Boost Your Ad</h1>
+      <p class="subtitle">Get more visibility and sell faster with a promoted listing.</p>
+
+      <div class="payment-layout">
+
+        <!-- LEFT: Ad Summary + Packages -->
+        <div>
+          <div class="payment-card" style="margin-bottom:20px;">
+            <h2>📋 Your Listing</h2>
+            <div class="ad-summary" id="ad-summary">
+              <div class="ad-summary-img">📱</div>
+              <div class="ad-summary-info">
+                <div class="ad-summary-title">iPhone 15 Pro Max 256GB – Mint Condition</div>
+                <div class="ad-summary-cat">Electronics › Mobile Phones</div>
+                <span class="ad-status">● Active</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-card">
+            <h2>🚀 Select a Package</h2>
+            <div class="packages" id="packages">
+
+              <div class="package-card" onclick="selectPackage(this)" id="pkg-1">
+                <div class="package-radio"></div>
+                <div class="package-info">
+                  <div class="package-name">Featured 3 Days</div>
+                  <div class="package-benefits">Highlighted in search results with "Featured" badge for 3 days</div>
+                </div>
+                <div class="package-price">RM 5.90</div>
+              </div>
+
+              <div class="package-card selected" onclick="selectPackage(this)" id="pkg-2">
+                <div class="package-radio"></div>
+                <div class="package-info">
+                  <div class="package-name">Featured 7 Days</div>
+                  <div class="package-benefits">Featured badge + priority placement in search for 7 days</div>
+                </div>
+                <div class="package-price">RM 9.90</div>
+                <span class="package-badge">Best Value</span>
+              </div>
+
+              <div class="package-card" onclick="selectPackage(this)" id="pkg-3">
+                <div class="package-radio"></div>
+                <div class="package-info">
+                  <div class="package-name">Top Ad 24 Hours</div>
+                  <div class="package-benefits">Pinned to the top of your category for 24 hours</div>
+                </div>
+                <div class="package-price">RM 14.90</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Payment Details -->
+        <div>
+          <div class="payment-card" id="payment-details">
+            <h2>💳 Payment Details</h2>
+
+            <!-- Breakdown -->
+            <div class="breakdown" id="breakdown">
+              <div class="breakdown-row">
+                <span>Featured 7 Days</span>
+                <span>RM 9.90</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Service fee</span>
+                <span>RM 0.50</span>
+              </div>
+              <div class="breakdown-row">
+                <span>SST (6%)</span>
+                <span>RM 0.62</span>
+              </div>
+              <div class="breakdown-row total">
+                <span>Total</span>
+                <span>RM 11.02</span>
+              </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+              <label class="form-label">Payment Method</label>
+              <div class="method-tabs" id="method-tabs">
+                <div class="method-tab" onclick="selectMethod(this)">
+                  <span class="tab-icon">🏦</span>
+                  FPX
+                </div>
+                <div class="method-tab active" onclick="selectMethod(this)">
+                  <span class="tab-icon">💳</span>
+                  Card
+                </div>
+                <div class="method-tab" onclick="selectMethod(this)">
+                  <span class="tab-icon">📲</span>
+                  E-Wallet
+                </div>
+              </div>
+
+              <!-- Card Fields -->
+              <div class="card-fields" id="card-fields">
+                <div class="form-group">
+                  <label class="form-label">Card Number</label>
+                  <input class="form-input" type="text" placeholder="1234 5678 9012 3456" id="card-number" />
+                </div>
+                <div class="card-row">
+                  <div class="form-group">
+                    <label class="form-label">Expiry</label>
+                    <input class="form-input" type="text" placeholder="MM/YY" id="card-expiry" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">CVV</label>
+                    <input class="form-input" type="text" placeholder="123" id="card-cvv" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Cardholder Name</label>
+                  <input class="form-input" type="text" placeholder="AHMAD HASSAN" id="card-name" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Pay Button -->
+            <button class="btn-primary btn-lg" style="width:100%;justify-content:center;" id="btn-pay">
+              🔒 Pay Now – RM 11.02
+            </button>
+
+            <div class="secure-notice">
+              <span class="lock">🔒</span>
+              <span>Your payment is secured with 256-bit SSL encryption. We never store your card details.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand"><span>Mudah</span>.my</div>
+          <p>Malaysia's largest online marketplace.</p>
+        </div>
+        <div>
+          <h4>Popular</h4>
+          <ul><li><a href="#">Cars</a></li><li><a href="#">Property</a></li><li><a href="#">Phones</a></li></ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul><li><a href="help.html">Help Center</a></li><li><a href="#">Terms</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    function selectPackage(el) {
+      document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+    function selectMethod(el) {
+      document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>

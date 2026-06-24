@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Listings – Mudah.my</title>
+  <meta name="description" content="View your saved listings and wishlist on Mudah.my. Quickly access items you're interested in." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .wishlist-page { padding: 40px 0; }
+    .wishlist-header { margin-bottom: 28px; }
+    .wishlist-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--grey-900);
+      margin-bottom: 6px;
+    }
+    .wishlist-header p {
+      font-size: 0.95rem;
+      color: var(--grey-600);
+    }
+
+    /* ---- Filters Row ---- */
+    .wishlist-filters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .wishlist-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .sort-dropdown {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--grey-600);
+    }
+    .sort-dropdown select {
+      padding: 8px 14px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--grey-700);
+      background: var(--white);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23757575' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      cursor: pointer;
+    }
+
+    /* ---- Saved Cards Grid ---- */
+    .saved-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .saved-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+      cursor: pointer;
+    }
+    .saved-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .saved-card-img {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, var(--grey-200), var(--grey-100));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .saved-heart {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .saved-heart:hover { transform: scale(1.15); }
+    .saved-card-body { padding: 14px 16px; }
+    .saved-card-price {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 4px;
+    }
+    .saved-card-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--grey-800);
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .saved-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      color: var(--grey-500);
+      margin-bottom: 10px;
+    }
+    .saved-card-meta span { display: flex; align-items: center; gap: 4px; }
+    .remove-link {
+      font-size: 0.75rem;
+      color: var(--red);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .remove-link:hover { text-decoration: underline; }
+
+    /* ---- Empty State ---- */
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: none;
+    }
+    .empty-state.visible { display: block; }
+    .empty-illustration {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      opacity: 0.6;
+    }
+    .empty-state h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--grey-800);
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      font-size: 0.95rem;
+      color: var(--grey-500);
+      margin-bottom: 24px;
+    }
+
+    /* ---- Count badge ---- */
+    .saved-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--grey-600);
+      margin-bottom: 4px;
+    }
+    .count-badge {
+      background: var(--red);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+    }
+
+    @media (max-width: 1024px) {
+      .saved-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .saved-grid { grid-template-columns: repeat(2, 1fr); }
+      .wishlist-filters { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .saved-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== TOP NAV ======== -->
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="index.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links">
+        <a href="search.html">Autos</a>
+        <a href="search.html">Property</a>
+        <a href="search.html">Electronics</a>
+        <a href="search.html">Jobs &amp; Services</a>
+        <a href="help.html">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="#" class="topnav-icon">🔔</a>
+        <a href="#" class="topnav-icon">💬</a>
+        <a href="sell.html" class="btn-post-ad">✚ Post Free Ad</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== WISHLIST PAGE ======== -->
+  <div class="wishlist-page">
+    <div class="container">
+
+      <div class="wishlist-header" id="wishlist-header">
+        <h1>Saved Listings</h1>
+        <p>Quickly access items you're interested in. Your saved listings are private and only visible to you.</p>
+        <div class="saved-count" style="margin-top:8px;">
+          <span class="count-badge">8</span> items saved
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="wishlist-filters" id="wishlist-filters">
+        <div class="wishlist-chips">
+          <span class="chip active">All</span>
+          <span class="chip">Cars</span>
+          <span class="chip">Property</span>
+          <span class="chip">Mobile Phones</span>
+          <span class="chip">Jobs</span>
+        </div>
+        <div class="sort-dropdown">
+          <span>Sort by:</span>
+          <select id="sort-saved">
+            <option>Newest saved</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Empty State (hidden by default) -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-illustration">💔</div>
+        <h2>You haven't saved any listings yet</h2>
+        <p>Browse the marketplace and tap the heart icon to save items you're interested in.</p>
+        <a href="index.html" class="btn-primary btn-lg">Browse Listings</a>
+      </div>
+
+      <!-- Saved Grid -->
+      <div class="saved-grid" id="saved-grid">
+
+        <div class="saved-card" id="saved-1">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">🚗</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 45,800</div>
+            <div class="saved-card-title">2020 Honda Civic 1.5 TC-P – Low Mileage</div>
+            <div class="saved-card-meta">
+              <span>📍 Kuala Lumpur</span>
+              <span>🕐 2h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-2">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);">📱</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 3,899</div>
+            <div class="saved-card-title">iPhone 15 Pro Max 256GB – Mint Condition</div>
+            <div class="saved-card-meta">
+              <span>📍 Petaling Jaya</span>
+              <span>🕐 1h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-3">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);">🏠</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 520,000</div>
+            <div class="saved-card-title">3-Bedroom Condo Mont Kiara – Fully Furnished</div>
+            <div class="saved-card-meta">
+              <span>📍 Mont Kiara</span>
+              <span>🕐 5h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-4">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2);">🐾</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 1,200</div>
+            <div class="saved-card-title">Golden Retriever Puppy – Vaccinated, Dewormed</div>
+            <div class="saved-card-meta">
+              <span>📍 Shah Alam</span>
+              <span>🕐 30m ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-5">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7);">🖥️</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 2,300</div>
+            <div class="saved-card-title">MacBook Air M2 2023 – 8GB/256GB, Like New</div>
+            <div class="saved-card-meta">
+              <span>📍 Penang</span>
+              <span>🕐 6h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-6">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#e0f7fa,#b2ebf2);">🏍️</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 8,500</div>
+            <div class="saved-card-title">Yamaha Y15ZR V2 2023 – Modified, Low Mileage</div>
+            <div class="saved-card-meta">
+              <span>📍 Johor Bahru</span>
+              <span>🕐 4h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-7">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#e8eaf6,#c5cae9);">💼</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 3,500/mo</div>
+            <div class="saved-card-title">Senior Software Engineer – Remote, KL Based</div>
+            <div class="saved-card-meta">
+              <span>📍 Remote</span>
+              <span>🕐 1d ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+        <div class="saved-card" id="saved-8">
+          <div class="saved-card-img" style="background:linear-gradient(135deg,#fbe9e7,#ffccbc);">👶</div>
+          <div class="saved-heart">❤️</div>
+          <div class="saved-card-body">
+            <div class="saved-card-price">RM 350</div>
+            <div class="saved-card-title">Joie Stroller + Car Seat Bundle – Excellent</div>
+            <div class="saved-card-meta">
+              <span>📍 Subang Jaya</span>
+              <span>🕐 3h ago</span>
+            </div>
+            <span class="remove-link" onclick="event.stopPropagation();">Remove</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand"><span>Mudah</span>.my</div>
+          <p>Malaysia's largest online marketplace.</p>
+        </div>
+        <div>
+          <h4>Popular</h4>
+          <ul><li><a href="#">Cars</a></li><li><a href="#">Property</a></li><li><a href="#">Phones</a></li></ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul><li><a href="help.html">Help Center</a></li><li><a href="#">Terms</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Chip toggle
+    document.querySelectorAll('.wishlist-chips .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.wishlist-chips .chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

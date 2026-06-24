@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Center – Mudah.my</title>
+  <meta name="description" content="Get help with buying, selling, payments and account security on Mudah.my. Find answers to common questions." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .help-hero {
+      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 50%, #fffde7 100%);
+      padding: 56px 0 48px;
+      text-align: center;
+    }
+    .help-hero h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--grey-900);
+      margin-bottom: 8px;
+    }
+    .help-hero p {
+      font-size: 1rem;
+      color: var(--grey-600);
+      margin-bottom: 28px;
+    }
+    .help-search {
+      display: flex;
+      align-items: center;
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-md);
+      padding: 4px;
+      border: 1.5px solid var(--grey-200);
+    }
+    .help-search input {
+      flex: 1;
+      padding: 14px 20px;
+      font-size: 0.9rem;
+    }
+    .help-search input::placeholder { color: var(--grey-400); }
+    .help-search button {
+      background: var(--red);
+      color: white;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+    .help-search button:hover { background: var(--red-hover); }
+
+    /* ---- Help Categories ---- */
+    .help-categories {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: -24px;
+      position: relative;
+      z-index: 2;
+    }
+    .help-cat-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 28px 24px;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+    }
+    .help-cat-card:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .help-cat-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px;
+      background: var(--red-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+    .help-cat-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 8px;
+    }
+    .help-cat-card p {
+      font-size: 0.8rem;
+      color: var(--grey-600);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .help-cat-link {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--red);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .help-cat-link:hover { text-decoration: underline; }
+
+    /* ---- FAQ + Support Section ---- */
+    .faq-support-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 32px;
+    }
+
+    /* FAQ */
+    .faq-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .faq-item {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--grey-800);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .faq-question:hover { color: var(--red); }
+    .faq-arrow {
+      font-size: 1rem;
+      color: var(--grey-400);
+      transition: transform 0.2s ease;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--red); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 20px;
+      font-size: 0.85rem;
+      color: var(--grey-600);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding: 0 20px 18px;
+    }
+
+    /* Support Options */
+    .support-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .support-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .support-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 16px;
+    }
+    .support-options { display: flex; flex-direction: column; gap: 10px; }
+    .support-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--grey-700);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .support-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+    .support-btn .icon { font-size: 1.2rem; }
+    .support-btn.whatsapp:hover { border-color: #25d366; color: #25d366; background: #e8f5e9; }
+
+    /* ---- Contact Form ---- */
+    .contact-section {
+      background: var(--white);
+      padding: 48px 0;
+    }
+    .contact-card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--grey-50);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .contact-card .sub {
+      font-size: 0.9rem;
+      color: var(--grey-600);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    @media (max-width: 1024px) {
+      .help-categories { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .help-categories { grid-template-columns: 1fr; }
+      .faq-support-layout { grid-template-columns: 1fr; }
+      .contact-row { grid-template-columns: 1fr; }
+      .help-hero h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== TOP NAV ======== -->
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="index.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links">
+        <a href="search.html">Autos</a>
+        <a href="search.html">Property</a>
+        <a href="search.html">Electronics</a>
+        <a href="search.html">Jobs &amp; Services</a>
+        <a href="help.html" class="active">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="#" class="topnav-icon">🔔</a>
+        <a href="#" class="topnav-icon">💬</a>
+        <a href="sell.html" class="btn-post-ad">✚ Post Free Ad</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== HELP HERO ======== -->
+  <section class="help-hero" id="help-hero">
+    <div class="container">
+      <h1>Help Center</h1>
+      <p>How can we help you today? Search for answers or browse topics below.</p>
+      <div class="help-search" id="help-search">
+        <input type="text" placeholder="Search for help articles..." id="help-search-input" />
+        <button id="help-search-btn">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== HELP CATEGORIES ======== -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="help-categories" id="help-categories">
+
+        <div class="help-cat-card" id="cat-buying">
+          <div class="help-cat-icon">🛒</div>
+          <h3>Buying on Mudah</h3>
+          <p>Learn how to search, contact sellers, and make safe purchases.</p>
+          <span class="help-cat-link">View articles →</span>
+        </div>
+
+        <div class="help-cat-card" id="cat-selling">
+          <div class="help-cat-icon">🏷️</div>
+          <h3>Selling on Mudah</h3>
+          <p>Tips on posting ads, pricing items, and managing your listings.</p>
+          <span class="help-cat-link">View articles →</span>
+        </div>
+
+        <div class="help-cat-card" id="cat-account">
+          <div class="help-cat-icon">🔐</div>
+          <h3>Account &amp; Security</h3>
+          <p>Manage your profile, password, and security settings.</p>
+          <span class="help-cat-link">View articles →</span>
+        </div>
+
+        <div class="help-cat-card" id="cat-payments">
+          <div class="help-cat-icon">💳</div>
+          <h3>Payments &amp; Refunds</h3>
+          <p>Information about promoted ads, payments, and refund policies.</p>
+          <span class="help-cat-link">View articles →</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FAQ + SUPPORT ======== -->
+  <section class="section" id="faq-support-section">
+    <div class="container">
+      <div class="faq-support-layout">
+
+        <!-- FAQ -->
+        <div class="faq-section">
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="faq-item open" id="faq-1">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              How do I contact a seller?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              You can contact a seller by clicking the "Chat with Seller" button on any listing page. You can also call the seller directly if they have provided their phone number. Always use the in-app chat for your safety.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-2">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              How do I report a suspicious ad?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Click the "Report" button on the listing page and select the appropriate reason. Our team will review the report within 24 hours and take action if necessary.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-3">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              How do I post a free ad?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Click the "Post Free Ad" button in the top navigation. Choose a category, fill in your item details, upload photos, and publish. It's completely free for standard listings!
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-4">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              How do I edit or delete my listing?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Go to your profile and find the listing under "My Ads". Click the edit icon to modify details, or use the delete option to remove it. Changes take effect immediately.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-5">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              What are promoted ads and how do they work?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Promoted ads give your listing extra visibility. You can choose packages like "Featured" or "Top Ad" that highlight your listing in search results and category pages. Promoted ads typically get 5-10x more views.
+            </div>
+          </div>
+
+          <div class="faq-item" id="faq-6">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Is it safe to buy on Mudah.my?
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              We take safety seriously. Always meet in public places, inspect items before paying, and use our in-app chat to keep a record. Never transfer money before seeing the item. Report any suspicious activity immediately.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Support Options -->
+        <div class="support-section">
+          <h2>Need More Help?</h2>
+
+          <div class="support-card" id="support-card">
+            <h3>Get in touch with us</h3>
+            <div class="support-options">
+              <div class="support-btn" id="live-chat-btn">
+                <span class="icon">💬</span>
+                Live Chat
+                <span style="margin-left:auto;font-size:0.7rem;color:var(--grey-500);">Online now</span>
+              </div>
+              <div class="support-btn" id="ticket-btn">
+                <span class="icon">📧</span>
+                Submit a Ticket
+                <span style="margin-left:auto;font-size:0.7rem;color:var(--grey-500);">~24h response</span>
+              </div>
+              <div class="support-btn whatsapp" id="whatsapp-btn">
+                <span class="icon">📱</span>
+                WhatsApp Support
+                <span style="margin-left:auto;font-size:0.7rem;color:var(--grey-500);">9am–6pm</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="support-card">
+            <h3>Quick Links</h3>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <a href="#" style="font-size:0.85rem;color:var(--red);font-weight:500;">📖 Community Guidelines</a>
+              <a href="#" style="font-size:0.85rem;color:var(--red);font-weight:500;">🛡️ Safety Tips</a>
+              <a href="#" style="font-size:0.85rem;color:var(--red);font-weight:500;">📝 Terms of Service</a>
+              <a href="#" style="font-size:0.85rem;color:var(--red);font-weight:500;">🔒 Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== CONTACT FORM ======== -->
+  <section class="contact-section" id="contact-section">
+    <div class="container">
+      <div class="contact-card" id="contact-form">
+        <h2>Still need help? Contact us</h2>
+        <p class="sub">Fill out the form below and we'll get back to you within 24 hours.</p>
+
+        <div class="contact-row" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input class="form-input" type="text" placeholder="Your full name" id="contact-name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="your@email.com" id="contact-email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Issue Type</label>
+          <select class="form-select" id="issue-type">
+            <option>Select issue type</option>
+            <option>Account Issues</option>
+            <option>Listing Problems</option>
+            <option>Payment & Refunds</option>
+            <option>Report a User</option>
+            <option>Technical Issues</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Describe your issue in detail..." id="contact-message"></textarea>
+        </div>
+
+        <button class="btn-primary btn-lg" style="width:100%;justify-content:center;" id="btn-send">Send Message</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand"><span>Mudah</span>.my</div>
+          <p>Malaysia's largest online marketplace.</p>
+        </div>
+        <div>
+          <h4>Popular</h4>
+          <ul><li><a href="#">Cars</a></li><li><a href="#">Property</a></li><li><a href="#">Phones</a></li></ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul><li><a href="help.html">Help Center</a></li><li><a href="#">Terms</a></li></ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      document.querySelectorAll('.faq-item').forEach(f => {
+        if (f !== item) f.classList.remove('open');
+      });
+      item.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
