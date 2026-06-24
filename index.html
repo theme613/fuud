@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Directory - Mudah.my Redesign</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .directory-page { padding: 80px 0; min-height: 100vh; display: flex; align-items: center; }
+    .directory-container { max-width: 800px; margin: 0 auto; padding: 0 24px; width: 100%; }
+    
+    .directory-header { text-align: center; margin-bottom: 48px; }
+    .directory-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--grey-900); letter-spacing: -1px; margin-bottom: 12px; }
+    .directory-header p { font-size: 1.1rem; color: var(--grey-500); }
+    
+    .directory-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    .directory-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+    }
+    
+    .directory-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--grey-200);
+    }
+    
+    .directory-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .directory-icon svg { width: 28px; height: 28px; }
+    
+    .directory-content { flex: 1; }
+    .directory-content h2 { font-size: 1.1rem; font-weight: 700; color: var(--grey-900); margin-bottom: 4px; }
+    .directory-content p { font-size: 0.85rem; color: var(--grey-500); line-height: 1.4; }
+    
+    .directory-arrow { color: var(--grey-300); transition: var(--transition); }
+    .directory-card:hover .directory-arrow { color: var(--red); transform: translateX(4px); }
+
+    @media (max-width: 768px) {
+      .directory-grid { grid-template-columns: 1fr; }
+      .directory-page { padding: 40px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="directory-page">
+    <div class="directory-container">
+      
+      <div class="directory-header">
+        <h1>Mudah.my Redesign</h1>
+        <p>All pages for the UI assignment, built with HTML/CSS</p>
+      </div>
+
+      <div class="directory-grid">
+        
+        <a href="01_homepage.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--blue-light);color:var(--blue);"><i data-lucide="home"></i></div>
+          <div class="directory-content">
+            <h2>01. Homepage</h2>
+            <p>Hero search, category grid, and trending listings.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="02_search.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--teal-light);color:var(--teal);"><i data-lucide="search"></i></div>
+          <div class="directory-content">
+            <h2>02. Search Results</h2>
+            <p>Filter panel, result rows, and pagination controls.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="03_product.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--purple-light);color:var(--purple);"><i data-lucide="smartphone"></i></div>
+          <div class="directory-content">
+            <h2>03. Product Detail</h2>
+            <p>Image gallery, seller card, and similar listings carousel.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="04_sell_item.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--orange-light);color:var(--orange);"><i data-lucide="plus-circle"></i></div>
+          <div class="directory-content">
+            <h2>04. Post an Ad</h2>
+            <p>Step progress indicator, form sections, and photo upload.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="05_payment.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--yellow-light);color:var(--yellow);"><i data-lucide="credit-card"></i></div>
+          <div class="directory-content">
+            <h2>05. Payment / Checkout</h2>
+            <p>Boost packages selection and payment method options.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="06_help_center.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--green-light);color:var(--green);"><i data-lucide="help-circle"></i></div>
+          <div class="directory-content">
+            <h2>06. Help Center</h2>
+            <p>Topic cards, FAQ accordion, and contact support form.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+        <a href="07_wishlist.html" class="directory-card">
+          <div class="directory-icon" style="background:var(--red-light);color:var(--red);"><i data-lucide="heart"></i></div>
+          <div class="directory-content">
+            <h2>07. Wishlist</h2>
+            <p>Saved items grid and price alert banner component.</p>
+          </div>
+          <div class="directory-arrow"><i data-lucide="chevron-right"></i></div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
