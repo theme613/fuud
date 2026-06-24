@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Mudah.my</title>
+  <meta name="description" content="Login to your Mudah.my account to manage your listings, saved items, and messages." />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .auth-page {
+      padding: 64px 0;
+      min-height: calc(100vh - 64px - 300px); /* Adjusting for topnav and footer approx heights */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, var(--white) 0%, var(--bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-page::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(229,57,53,0.03) 0%, transparent 70%);
+      top: -200px; left: -100px;
+      border-radius: 50%;
+    }
+    
+    .auth-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .auth-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--grey-900);
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .auth-header p {
+      font-size: 0.9rem;
+      color: var(--grey-500);
+    }
+    
+    .auth-form .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .password-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .password-header .form-label {
+      margin-bottom: 0;
+    }
+    .forgot-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--red);
+      transition: var(--transition);
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+    
+    .auth-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 28px 0;
+      color: var(--grey-400);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--grey-200);
+    }
+    .auth-divider span {
+      padding: 0 16px;
+    }
+    
+    .social-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-social {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      color: var(--grey-700);
+      font-weight: 600;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .btn-social:hover {
+      background: var(--grey-50);
+      border-color: var(--grey-300);
+    }
+    .btn-social svg {
+      width: 18px;
+      height: 18px;
+    }
+    .btn-social.google:hover { color: #DB4437; }
+    .btn-social.facebook:hover { color: #1877F2; }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.85rem;
+      color: var(--grey-600);
+    }
+    .auth-footer a {
+      color: var(--red);
+      font-weight: 700;
+      margin-left: 4px;
+      transition: var(--transition);
+    }
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Keep topnav simplified for auth page */
+    .topnav-links.auth-hide { display: none; }
+    
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 40px 24px;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+      .auth-page {
+        padding: 20px 0;
+        background: var(--white);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== TOP NAV ======== -->
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="01_homepage.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links auth-hide">
+        <a href="02_search.html">Autos</a>
+        <a href="02_search.html">Property</a>
+        <a href="02_search.html">Electronics</a>
+        <a href="02_search.html">Jobs &amp; Services</a>
+        <a href="06_help_center.html">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="06_help_center.html" class="topnav-icon" title="Help" style="font-size:0.8rem; width:auto; padding:0 12px; font-weight:600;">
+          Need help?
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== AUTH PAGE ======== -->
+  <div class="auth-page">
+    <div class="container" style="display: flex; justify-content: center;">
+      
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Welcome back</h1>
+          <p>Enter your details to access your account.</p>
+        </div>
+        
+        <form class="auth-form" action="#" method="POST" onsubmit="event.preventDefault(); window.location.href='01_homepage.html';">
+          <div class="form-group">
+            <label class="form-label" for="email">Email address</label>
+            <input class="form-input" type="email" id="email" placeholder="e.g. name@example.com" required />
+          </div>
+          
+          <div class="form-group">
+            <div class="password-header">
+              <label class="form-label" for="password">Password</label>
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+            <input class="form-input" type="password" id="password" placeholder="••••••••" required />
+          </div>
+          
+          <button type="submit" class="btn-primary auth-btn">
+            <i data-lucide="log-in" style="width:18px;height:18px;"></i> Log In
+          </button>
+        </form>
+        
+        <div class="auth-divider"><span>Or continue with</span></div>
+        
+        <div class="social-btns">
+          <button class="btn-social google">
+            <!-- Simple SVG for Google -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google
+          </button>
+          <button class="btn-social facebook">
+            <!-- Simple SVG for Facebook -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1877F2">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            Facebook
+          </button>
+        </div>
+        
+        <div class="auth-footer">
+          Don't have an account? <a href="#">Sign up</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" id="footer" style="margin-top:0;">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
