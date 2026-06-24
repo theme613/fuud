@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post an Ad – Mudah.my</title>
+  <meta name="description" content="Post your free ad on Mudah.my. Sell your items to millions of buyers across Malaysia." />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .sell-page { padding: 40px 0; }
+
+    /* Progress Steps */
+    .progress-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .step { display: flex; flex-direction: column; align-items: center; position: relative; flex: 1; }
+    .step-circle {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: var(--grey-200); color: var(--grey-400);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;
+      z-index: 2; transition: var(--transition);
+    }
+    .step-circle svg { width: 18px; height: 18px; }
+    .step.active .step-circle { background: var(--red); color: var(--white); box-shadow: 0 4px 16px rgba(229,57,53,0.25); }
+    .step.done .step-circle { background: var(--green); color: var(--white); }
+    .step-label { font-size: 0.7rem; font-weight: 600; color: var(--grey-400); letter-spacing: 0.3px; }
+    .step.active .step-label { color: var(--red); }
+    .step.done .step-label { color: var(--green); }
+    .step-line {
+      position: absolute; top: 22px; left: calc(50% + 26px);
+      width: calc(100% - 52px); height: 3px;
+      background: var(--grey-200); z-index: 1; border-radius: 2px;
+    }
+    .step.done .step-line { background: var(--green); }
+    .step:last-child .step-line { display: none; }
+
+    /* Form Layout */
+    .sell-layout { display: grid; grid-template-columns: 1fr 360px; gap: 28px; }
+    .form-card {
+      background: var(--white); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); padding: 28px;
+    }
+    .form-card h2 {
+      font-size: 0.95rem; font-weight: 700; color: var(--grey-900);
+      margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--grey-100);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .form-card h2 .form-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .form-card h2 .form-icon svg { width: 16px; height: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Price Input */
+    .price-input-wrap {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--grey-200); border-radius: var(--radius-sm);
+      overflow: hidden; transition: var(--transition);
+    }
+    .price-input-wrap:focus-within { border-color: var(--red); box-shadow: 0 0 0 3px rgba(229,57,53,0.08); }
+    .price-prefix {
+      padding: 12px 14px; background: var(--grey-50);
+      font-size: 0.85rem; font-weight: 700; color: var(--grey-500);
+      border-right: 1.5px solid var(--grey-200);
+    }
+    .price-input-wrap input { flex: 1; padding: 12px 14px; font-size: 0.9rem; }
+
+    /* Toggles */
+    .toggle-row { display: flex; gap: 24px; margin-top: 8px; }
+    .toggle-item { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--grey-600); }
+    .toggle {
+      width: 44px; height: 24px; border-radius: 12px;
+      background: var(--grey-200); position: relative;
+      cursor: pointer; transition: var(--transition);
+    }
+    .toggle.active { background: var(--red); }
+    .toggle::after {
+      content: ''; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--white); position: absolute; top: 3px; left: 3px;
+      box-shadow: var(--shadow-xs); transition: var(--transition);
+    }
+    .toggle.active::after { left: 23px; }
+
+    /* Deal Options */
+    .deal-options { display: flex; gap: 12px; margin-top: 8px; }
+    .deal-option {
+      flex: 1; padding: 16px 12px; border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-sm); text-align: center; cursor: pointer;
+      transition: var(--transition); font-size: 0.8rem; font-weight: 500;
+      color: var(--grey-600); display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .deal-option:hover { border-color: var(--red); }
+    .deal-option.selected { border-color: var(--red); background: var(--red-light); color: var(--red); font-weight: 600; }
+    .deal-option svg { width: 22px; height: 22px; }
+
+    /* Photo Upload */
+    .photo-section {
+      background: var(--white); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); padding: 24px;
+    }
+    .photo-section h2 {
+      font-size: 0.95rem; font-weight: 700; color: var(--grey-900);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .photo-section h2 svg { width: 18px; height: 18px; color: var(--purple); }
+    .upload-area {
+      border: 2px dashed var(--grey-200); border-radius: var(--radius-md);
+      padding: 40px 24px; text-align: center; cursor: pointer;
+      transition: var(--transition); margin-bottom: 16px;
+    }
+    .upload-area:hover { border-color: var(--red); background: var(--red-light); }
+    .upload-area .upload-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--purple-light); color: var(--purple);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .upload-area .upload-icon svg { width: 24px; height: 24px; }
+    .upload-area p { font-size: 0.875rem; color: var(--grey-600); font-weight: 600; }
+    .upload-area span { font-size: 0.75rem; color: var(--grey-400); display: block; margin-top: 6px; }
+    .uploaded-thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .uploaded-thumb {
+      width: 68px; height: 68px; border-radius: var(--radius-sm);
+      background: var(--grey-100); display: flex; align-items: center; justify-content: center;
+      position: relative; color: var(--grey-400);
+    }
+    .uploaded-thumb svg { width: 22px; height: 22px; }
+    .remove-thumb {
+      position: absolute; top: -6px; right: -6px;
+      width: 20px; height: 20px; background: var(--red); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .remove-thumb svg { width: 10px; height: 10px; }
+
+    .form-actions { display: flex; justify-content: space-between; margin-top: 32px; }
+
+    @media (max-width: 1024px) { .sell-layout { grid-template-columns: 1fr 300px; } }
+    @media (max-width: 768px) {
+      .sell-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .deal-options { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="01_homepage.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links">
+        <a href="02_search.html">Autos</a>
+        <a href="02_search.html">Property</a>
+        <a href="02_search.html">Electronics</a>
+        <a href="02_search.html">Jobs &amp; Services</a>
+        <a href="06_help_center.html">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="#" class="topnav-icon"><i data-lucide="bell"></i></a>
+        <a href="#" class="topnav-icon"><i data-lucide="message-circle"></i></a>
+        <a href="04_sell_item.html" class="btn-post-ad"><i data-lucide="plus"></i> Post Free Ad</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sell-page">
+    <div class="container">
+      <h1 style="text-align:center;font-size:1.75rem;font-weight:800;color:var(--grey-900);margin-bottom:6px;letter-spacing:-0.5px;">Post an Ad</h1>
+      <p style="text-align:center;font-size:0.9rem;color:var(--grey-500);margin-bottom:36px;">Reach millions of buyers across Malaysia – it's free!</p>
+
+      <div class="progress-bar" id="progress-bar">
+        <div class="step done">
+          <div class="step-circle"><i data-lucide="check"></i></div>
+          <span class="step-label">Category</span>
+          <div class="step-line"></div>
+        </div>
+        <div class="step active">
+          <div class="step-circle">2</div>
+          <span class="step-label">Details</span>
+          <div class="step-line"></div>
+        </div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <span class="step-label">Photos</span>
+          <div class="step-line"></div>
+        </div>
+        <div class="step">
+          <div class="step-circle">4</div>
+          <span class="step-label">Review</span>
+        </div>
+      </div>
+
+      <div class="sell-layout">
+        <div>
+          <div class="form-card" style="margin-bottom:20px;">
+            <h2><span class="form-icon" style="background:var(--blue-light);color:var(--blue);"><i data-lucide="folder"></i></span> Category</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Main Category</label>
+                <select class="form-select" id="main-category"><option>Select Category</option><option>Autos</option><option selected>Electronics</option><option>Property</option><option>Jobs</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subcategory</label>
+                <select class="form-select" id="sub-category"><option>Select Subcategory</option><option selected>Mobile Phones</option><option>Laptops</option><option>Tablets</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-bottom:20px;">
+            <h2><span class="form-icon" style="background:var(--teal-light);color:var(--teal);"><i data-lucide="file-text"></i></span> Listing Details</h2>
+            <div class="form-group">
+              <label class="form-label">Ad Title</label>
+              <input class="form-input" type="text" placeholder="e.g. iPhone 15 Pro Max 256GB – Mint Condition" id="ad-title" value="iPhone 15 Pro Max 256GB – Mint Condition" />
+              <span class="form-helper">Make your title descriptive and specific (max 80 characters)</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea class="form-textarea" id="ad-description" placeholder="Describe your item in detail...">Selling my iPhone 15 Pro Max 256GB in Natural Titanium. Purchased from Apple Store KL in December 2024. Phone is in excellent mint condition.
+
+Includes: Original box, USB-C cable, MagSafe case. Battery health: 97%.</textarea>
+              <span class="form-helper">Include key details like brand, model, condition, and what's included</span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Condition</label>
+                <select class="form-select" id="condition"><option>Select Condition</option><option>New</option><option selected>Used – Like New</option><option>Used – Good</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Brand</label>
+                <input class="form-input" type="text" placeholder="e.g. Apple" id="brand" value="Apple" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Model</label>
+              <input class="form-input" type="text" placeholder="e.g. iPhone 15 Pro Max" id="model" value="iPhone 15 Pro Max" />
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-bottom:20px;">
+            <h2><span class="form-icon" style="background:var(--yellow-light);color:var(--yellow);"><i data-lucide="banknote"></i></span> Price &amp; Deal Method</h2>
+            <div class="form-group">
+              <label class="form-label">Price</label>
+              <div class="price-input-wrap">
+                <span class="price-prefix">RM</span>
+                <input type="number" placeholder="0.00" id="price-input" value="3899" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Price Type</label>
+              <div class="toggle-row">
+                <div class="toggle-item"><div class="toggle" onclick="this.classList.toggle('active')"></div><span>Firm Price</span></div>
+                <div class="toggle-item"><div class="toggle active" onclick="this.classList.toggle('active')"></div><span>Negotiable</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Deal Method</label>
+              <div class="deal-options">
+                <div class="deal-option selected" onclick="selectDeal(this)"><i data-lucide="handshake"></i> Cash on Delivery</div>
+                <div class="deal-option" onclick="selectDeal(this)"><i data-lucide="package"></i> Postage</div>
+                <div class="deal-option" onclick="selectDeal(this)"><i data-lucide="repeat"></i> Both</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-bottom:20px;">
+            <h2><span class="form-icon" style="background:var(--green-light);color:var(--green);"><i data-lucide="map-pin"></i></span> Location</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">State</label>
+                <select class="form-select" id="state"><option>Select State</option><option selected>Selangor</option><option>Kuala Lumpur</option><option>Penang</option></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">City</label>
+                <select class="form-select" id="city"><option>Select City</option><option selected>Petaling Jaya</option><option>Shah Alam</option></select>
+              </div>
+            </div>
+            <div style="width:100%;height:160px;background:var(--grey-100);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--grey-400);font-size:0.85rem;gap:8px;margin-top:4px;">
+              <i data-lucide="map-pin" style="width:20px;height:20px;"></i> Petaling Jaya, Selangor
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-outline-red" id="btn-back"><i data-lucide="arrow-left"></i> Back</button>
+            <button class="btn-primary btn-lg" id="btn-next">Next: Upload Photos <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div>
+          <div class="photo-section" id="photo-section" style="position:sticky;top:80px;">
+            <h2><i data-lucide="camera"></i> Photos</h2>
+            <div class="upload-area" id="upload-area">
+              <div class="upload-icon"><i data-lucide="upload"></i></div>
+              <p>Upload photos</p>
+              <span>Drag &amp; drop or click to browse. Max 10 photos, 5MB each.</span>
+            </div>
+            <div class="uploaded-thumbs" id="uploaded-thumbs">
+              <div class="uploaded-thumb"><i data-lucide="smartphone"></i><span class="remove-thumb"><i data-lucide="x"></i></span></div>
+              <div class="uploaded-thumb"><i data-lucide="package"></i><span class="remove-thumb"><i data-lucide="x"></i></span></div>
+              <div class="uploaded-thumb"><i data-lucide="cable"></i><span class="remove-thumb"><i data-lucide="x"></i></span></div>
+              <div class="uploaded-thumb" style="background:transparent;border:2px dashed var(--grey-200);cursor:pointer;color:var(--grey-400);"><i data-lucide="plus"></i></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--grey-400);margin-top:14px;">
+              <i data-lucide="lightbulb" style="width:14px;height:14px;color:var(--yellow);"></i>
+              Listings with clear photos get 3x more views!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="footer-brand"><span>Mudah</span>.my</div><p>Malaysia's largest online marketplace.</p></div>
+        <div><h4>Popular</h4><ul><li><a href="#">Cars</a></li><li><a href="#">Property</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li></ul></div>
+        <div><h4>Support</h4><ul><li><a href="06_help_center.html">Help Center</a></li><li><a href="#">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    function selectDeal(el) {
+      document.querySelectorAll('.deal-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+  </script>
+</body>
+</html>

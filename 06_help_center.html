@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Center – Mudah.my</title>
+  <meta name="description" content="Get help with buying, selling, payments and account security on Mudah.my." />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .help-hero {
+      background: linear-gradient(160deg, var(--white) 0%, var(--bg) 100%);
+      padding: 56px 0 72px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .help-hero::before {
+      content: ''; position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(124,77,255,0.04) 0%, transparent 70%);
+      top: -200px; right: -100px; border-radius: 50%;
+    }
+    .help-hero h1 { font-size: 2.25rem; font-weight: 800; color: var(--grey-900); margin-bottom: 8px; letter-spacing: -0.5px; position: relative; }
+    .help-hero p { font-size: 0.95rem; color: var(--grey-500); margin-bottom: 28px; position: relative; }
+    .help-search {
+      display: flex; align-items: center; max-width: 540px; margin: 0 auto;
+      background: var(--white); border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-md); padding: 4px; border: 1.5px solid var(--grey-200);
+      position: relative; z-index: 2;
+    }
+    .help-search .search-icon { padding: 0 6px 0 16px; color: var(--grey-400); display: flex; }
+    .help-search .search-icon svg { width: 18px; height: 18px; }
+    .help-search input { flex: 1; padding: 12px 12px; font-size: 0.875rem; }
+    .help-search input::placeholder { color: var(--grey-400); }
+    .help-search button {
+      background: var(--red); color: white; font-weight: 600;
+      padding: 12px 24px; border-radius: var(--radius-pill); font-size: 0.8125rem;
+      transition: var(--transition); display: flex; align-items: center; gap: 6px;
+    }
+    .help-search button:hover { background: var(--red-hover); }
+    .help-search button svg { width: 16px; height: 16px; }
+
+    /* Help Categories */
+    .help-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: -28px; position: relative; z-index: 2; }
+    .help-cat-card {
+      background: var(--white); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md); padding: 28px 24px; text-align: center;
+      transition: var(--transition); cursor: pointer; border: 1.5px solid transparent;
+    }
+    .help-cat-card:hover { border-color: var(--grey-200); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .help-cat-icon {
+      width: 52px; height: 52px; margin: 0 auto 14px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .help-cat-icon svg { width: 24px; height: 24px; }
+    .help-cat-card h3 { font-size: 0.875rem; font-weight: 700; color: var(--grey-900); margin-bottom: 8px; }
+    .help-cat-card p { font-size: 0.75rem; color: var(--grey-500); line-height: 1.5; margin-bottom: 14px; }
+    .help-cat-link {
+      font-size: 0.75rem; font-weight: 600; color: var(--red);
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .help-cat-link svg { width: 14px; height: 14px; }
+    .help-cat-link:hover { text-decoration: underline; }
+
+    /* FAQ + Support */
+    .faq-support-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; }
+    .faq-section h2, .support-section h2 {
+      font-size: 1.15rem; font-weight: 700; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .faq-section h2 svg, .support-section h2 svg { width: 20px; height: 20px; color: var(--grey-400); }
+    .faq-item {
+      background: var(--white); border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-xs); margin-bottom: 8px; overflow: hidden;
+      border: 1px solid var(--grey-100);
+    }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; font-size: 0.85rem; font-weight: 600;
+      color: var(--grey-800); cursor: pointer; transition: var(--transition);
+    }
+    .faq-question:hover { color: var(--red); }
+    .faq-question svg { width: 16px; height: 16px; color: var(--grey-400); transition: transform 0.2s ease; flex-shrink: 0; }
+    .faq-item.open .faq-question svg { transform: rotate(180deg); color: var(--red); }
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 20px; font-size: 0.8125rem; color: var(--grey-500); line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; padding: 0 20px 18px; }
+
+    .support-card {
+      background: var(--white); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); padding: 24px; margin-bottom: 16px;
+    }
+    .support-card h3 {
+      font-size: 0.9rem; font-weight: 700; color: var(--grey-900);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .support-card h3 svg { width: 16px; height: 16px; color: var(--grey-400); }
+    .support-options { display: flex; flex-direction: column; gap: 8px; }
+    .support-btn {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border: 1.5px solid var(--grey-200); border-radius: var(--radius-sm);
+      font-size: 0.8125rem; font-weight: 600; color: var(--grey-600);
+      transition: var(--transition); cursor: pointer;
+    }
+    .support-btn svg { width: 18px; height: 18px; }
+    .support-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+    .support-btn.whatsapp:hover { border-color: #25d366; color: #25d366; background: #e8f5e9; }
+    .support-btn .badge-online {
+      margin-left: auto; font-size: 0.6rem; font-weight: 700;
+      padding: 3px 8px; border-radius: var(--radius-pill);
+      background: var(--green-light); color: var(--green);
+    }
+    .support-btn .badge-time {
+      margin-left: auto; font-size: 0.6rem; color: var(--grey-400);
+    }
+    .quick-links a {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.8125rem; color: var(--grey-600); font-weight: 500;
+      padding: 8px 0; transition: var(--transition);
+    }
+    .quick-links a:hover { color: var(--red); }
+    .quick-links a svg { width: 16px; height: 16px; }
+
+    /* Contact Form */
+    .contact-section { background: var(--white); padding: 48px 0; }
+    .contact-card {
+      max-width: 680px; margin: 0 auto; background: var(--grey-50);
+      border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-sm);
+    }
+    .contact-card h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; text-align: center; }
+    .contact-card .sub { font-size: 0.85rem; color: var(--grey-500); text-align: center; margin-bottom: 28px; }
+    .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    @media (max-width: 1024px) { .help-categories { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+      .help-categories { grid-template-columns: 1fr; }
+      .faq-support-layout { grid-template-columns: 1fr; }
+      .contact-row { grid-template-columns: 1fr; }
+      .help-hero h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav" id="topnav">
+    <div class="container">
+      <a href="01_homepage.html" class="topnav-logo">Mudah<span>.my</span></a>
+      <div class="topnav-links">
+        <a href="02_search.html">Autos</a>
+        <a href="02_search.html">Property</a>
+        <a href="02_search.html">Electronics</a>
+        <a href="02_search.html">Jobs &amp; Services</a>
+        <a href="06_help_center.html" class="active">Help Center</a>
+      </div>
+      <div class="topnav-actions">
+        <a href="#" class="topnav-icon"><i data-lucide="bell"></i></a>
+        <a href="#" class="topnav-icon"><i data-lucide="message-circle"></i></a>
+        <a href="04_sell_item.html" class="btn-post-ad"><i data-lucide="plus"></i> Post Free Ad</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="help-hero" id="help-hero">
+    <div class="container">
+      <h1>Help Center</h1>
+      <p>How can we help you today? Search for answers or browse topics below.</p>
+      <div class="help-search" id="help-search">
+        <span class="search-icon"><i data-lucide="search"></i></span>
+        <input type="text" placeholder="Search for help articles..." id="help-search-input" />
+        <button id="help-search-btn"><i data-lucide="search"></i> Search</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="help-categories" id="help-categories">
+        <div class="help-cat-card" id="cat-buying">
+          <div class="help-cat-icon" style="background:var(--blue-light);color:var(--blue);"><i data-lucide="shopping-cart"></i></div>
+          <h3>Buying on Mudah</h3>
+          <p>Learn how to search, contact sellers, and make safe purchases.</p>
+          <span class="help-cat-link">View articles <i data-lucide="arrow-right"></i></span>
+        </div>
+        <div class="help-cat-card" id="cat-selling">
+          <div class="help-cat-icon" style="background:var(--teal-light);color:var(--teal);"><i data-lucide="tag"></i></div>
+          <h3>Selling on Mudah</h3>
+          <p>Tips on posting ads, pricing items, and managing your listings.</p>
+          <span class="help-cat-link">View articles <i data-lucide="arrow-right"></i></span>
+        </div>
+        <div class="help-cat-card" id="cat-account">
+          <div class="help-cat-icon" style="background:var(--purple-light);color:var(--purple);"><i data-lucide="shield"></i></div>
+          <h3>Account &amp; Security</h3>
+          <p>Manage your profile, password, and security settings.</p>
+          <span class="help-cat-link">View articles <i data-lucide="arrow-right"></i></span>
+        </div>
+        <div class="help-cat-card" id="cat-payments">
+          <div class="help-cat-icon" style="background:var(--yellow-light);color:var(--yellow);"><i data-lucide="credit-card"></i></div>
+          <h3>Payments &amp; Refunds</h3>
+          <p>Information about promoted ads, payments, and refund policies.</p>
+          <span class="help-cat-link">View articles <i data-lucide="arrow-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq-support-section">
+    <div class="container">
+      <div class="faq-support-layout">
+        <div class="faq-section">
+          <h2><i data-lucide="help-circle"></i> Frequently Asked Questions</h2>
+          <div class="faq-item open" id="faq-1">
+            <div class="faq-question" onclick="toggleFaq(this)">How do I contact a seller? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">You can contact a seller by clicking the "Chat with Seller" button on any listing page. You can also call the seller directly if they have provided their phone number. Always use the in-app chat for your safety.</div>
+          </div>
+          <div class="faq-item" id="faq-2">
+            <div class="faq-question" onclick="toggleFaq(this)">How do I report a suspicious ad? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">Click the "Report" button on the listing page and select the appropriate reason. Our team will review the report within 24 hours and take action if necessary.</div>
+          </div>
+          <div class="faq-item" id="faq-3">
+            <div class="faq-question" onclick="toggleFaq(this)">How do I post a free ad? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">Click the "Post Free Ad" button in the top navigation. Choose a category, fill in your item details, upload photos, and publish. It's completely free for standard listings!</div>
+          </div>
+          <div class="faq-item" id="faq-4">
+            <div class="faq-question" onclick="toggleFaq(this)">How do I edit or delete my listing? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">Go to your profile and find the listing under "My Ads". Click the edit icon to modify details, or use the delete option to remove it.</div>
+          </div>
+          <div class="faq-item" id="faq-5">
+            <div class="faq-question" onclick="toggleFaq(this)">What are promoted ads? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">Promoted ads give your listing extra visibility. You can choose packages like "Featured" or "Top Ad" that highlight your listing in search results. Promoted ads typically get 5-10x more views.</div>
+          </div>
+          <div class="faq-item" id="faq-6">
+            <div class="faq-question" onclick="toggleFaq(this)">Is it safe to buy on Mudah.my? <i data-lucide="chevron-down"></i></div>
+            <div class="faq-answer">We take safety seriously. Always meet in public places, inspect items before paying, and use our in-app chat. Never transfer money before seeing the item.</div>
+          </div>
+        </div>
+
+        <div class="support-section">
+          <h2><i data-lucide="headphones"></i> Need More Help?</h2>
+          <div class="support-card" id="support-card">
+            <h3><i data-lucide="phone-call"></i> Get in touch with us</h3>
+            <div class="support-options">
+              <div class="support-btn" id="live-chat-btn">
+                <i data-lucide="message-square"></i> Live Chat
+                <span class="badge-online">Online</span>
+              </div>
+              <div class="support-btn" id="ticket-btn">
+                <i data-lucide="mail"></i> Submit a Ticket
+                <span class="badge-time">~24h response</span>
+              </div>
+              <div class="support-btn whatsapp" id="whatsapp-btn">
+                <i data-lucide="smartphone"></i> WhatsApp Support
+                <span class="badge-time">9am–6pm</span>
+              </div>
+            </div>
+          </div>
+          <div class="support-card">
+            <h3><i data-lucide="link"></i> Quick Links</h3>
+            <div class="quick-links">
+              <a href="#"><i data-lucide="book-open"></i> Community Guidelines</a>
+              <a href="#"><i data-lucide="shield"></i> Safety Tips</a>
+              <a href="#"><i data-lucide="file-text"></i> Terms of Service</a>
+              <a href="#"><i data-lucide="lock"></i> Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact-section">
+    <div class="container">
+      <div class="contact-card" id="contact-form">
+        <h2>Still need help? Contact us</h2>
+        <p class="sub">Fill out the form below and we'll get back to you within 24 hours.</p>
+        <div class="contact-row" style="margin-bottom:16px;">
+          <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your full name" id="contact-name" /></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" id="contact-email" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Issue Type</label><select class="form-select" id="issue-type"><option>Select issue type</option><option>Account Issues</option><option>Listing Problems</option><option>Payment & Refunds</option><option>Report a User</option><option>Other</option></select></div>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Describe your issue in detail..." id="contact-message"></textarea></div>
+        <button class="btn-primary btn-lg" style="width:100%;justify-content:center;" id="btn-send"><i data-lucide="send"></i> Send Message</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="footer-brand"><span>Mudah</span>.my</div><p>Malaysia's largest online marketplace.</p></div>
+        <div><h4>Popular</h4><ul><li><a href="#">Cars</a></li><li><a href="#">Property</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul></div>
+        <div><h4>Support</h4><ul><li><a href="06_help_center.html">Help Center</a></li><li><a href="#">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">© 2026 Mudah.my. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      document.querySelectorAll('.faq-item').forEach(f => { if (f !== item) f.classList.remove('open'); });
+      item.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
